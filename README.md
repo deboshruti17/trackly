@@ -2,8 +2,7 @@
 
 A job application tracker with built-in analytics, a kanban board, and a resume-vs-job-posting analyzer. Track every application in one place, see what is actually working, and get nudged when an application goes quiet.
 
-<!-- Add a screenshot: upload dashboard.png to the repo, then replace this line with: ![Dashboard](dashboard.png) -->
-
+   ![Trackly dashboard](Screenshot%202026-09-30%20023629.png)
 ## Features
 
 - **Dashboard:** donut chart of applications by stage, plus cards for interviews booked, waiting for reply, and offers.
