@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trackly – Job application tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f0dd;--card:#ece5d3;--ink:#111;--mut:#6d675a;--pink:#f5b5d6;--blue:#b5c7ee;--yel:#f7d95c;--grn:#a6bf7b;--side:#0d0d0d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1a16;--card:#2a2822;--ink:#f4efe2;--mut:#a39d8d}}
+:root[data-theme="dark"]{--bg:#1b1a16;--card:#2a2822;--ink:#f4efe2;--mut:#a39d8d}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--ink);font:14px/1.4 Outfit,system-ui,sans-serif;padding:16px}
+.app{display:grid;grid-template-columns:200px 1fr;gap:20px;border:2px solid var(--ink);border-radius:26px;padding:12px;max-width:1240px;margin:auto}
+aside{background:var(--side);color:#eee;border-radius:18px;padding:22px 16px;display:flex;flex-direction:column;gap:6px;min-height:700px}
+.logo{font-size:26px;font-weight:600;color:#fff;margin-bottom:22px;letter-spacing:-.5px}
+aside small{color:#888;margin:14px 0 4px;font-size:12px}
+aside a{display:flex;gap:10px;align-items:center;padding:7px 8px;border-radius:10px;color:#ddd;font-size:13px;cursor:pointer;text-decoration:none}
+aside a.on{color:var(--pink)}aside a i{width:15px;height:15px;border:1.5px solid currentColor;border-radius:4px;flex:none}
+main{padding:8px 8px 8px 0;min-width:0}
+.top{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.search{flex:1;border:1.5px solid var(--ink);border-radius:30px;padding:8px 14px;display:flex;gap:10px;align-items:center;font-size:13px;flex-wrap:wrap}
+.search input{border:0;background:none;outline:0;flex:1;min-width:80px;font:inherit;color:inherit}
+.tag{background:var(--card);border:1px dashed var(--mut);border-radius:20px;padding:1px 8px;font-size:11px}
+.ic{width:34px;height:34px;border-radius:50%;background:var(--ink);flex:none}.ic.p{background:var(--pink)}
+h1{font-size:30px;font-weight:500;letter-spacing:-.8px;margin:6px 0 18px}
+h2{font-size:16px;font-weight:500;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:minmax(260px,330px) 1fr;gap:22px}
+.donut{position:relative;width:250px;height:250px;margin:0 auto 12px}
+.donut svg{transform:rotate(-90deg)}
+.donut b{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-size:56px;font-weight:500;letter-spacing:-2px;line-height:1}
+.donut b span{font-size:12px;letter-spacing:0;color:var(--mut);font-weight:400;margin-top:4px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;justify-content:center;margin-bottom:14px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.stat{border-radius:16px;padding:14px 16px;margin-bottom:12px;position:relative}
+.stat p{font-size:15px}.stat .n{font-size:34px;font-weight:500;letter-spacing:-1px;margin:4px 0 0}.stat small{font-size:11px;opacity:.7}
+.chip{position:absolute;right:14px;bottom:14px;background:#fff;border-radius:8px;padding:3px 8px;font-size:11px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.box{background:var(--card);border-radius:16px;padding:14px}
+.who{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.av{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:600}
+.pill{border-radius:20px;padding:2px 10px;font-size:11px;white-space:nowrap}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:20px;padding:5px 12px;font:inherit;font-size:11px;cursor:pointer}
+.spread{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.an{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.bar{height:10px;border-radius:6px;background:rgba(0,0,0,.09);margin:4px 0 9px;overflow:hidden}.bar i{display:block;height:100%;border-radius:6px}
+.wk{display:flex;gap:6px;align-items:flex-end;height:80px}.wk div{flex:1;border-radius:6px 6px 2px 2px;position:relative}
+.wk span{position:absolute;bottom:-16px;left:0;right:0;text-align:center;font-size:10px;color:var(--mut)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.f{border:0;background:var(--card);border-radius:20px;padding:4px 12px;font:inherit;font-size:12px;color:var(--ink);cursor:pointer}
+.f.on{background:var(--ink);color:var(--bg)}
+.tbl{overflow-x:auto;background:var(--card);border-radius:16px;padding:6px 14px}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:640px}
+th{text-align:left;font-weight:400;color:var(--mut);padding:8px 6px;font-size:11px}
+td{padding:11px 6px;border-top:1px solid rgba(0,0,0,.08);font-weight:500}
+.board{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:10px;overflow-x:auto}
+.col{background:var(--card);border-radius:16px;padding:10px;min-height:120px}
+.col h3{font-size:12px;font-weight:500;margin-bottom:8px}
+.job{background:var(--bg);border-radius:12px;padding:9px;margin-bottom:8px;font-size:12px}
+.job small{color:var(--mut)}
+@media(max-width:860px){.app{grid-template-columns:1fr}aside{min-height:0;flex-direction:row;flex-wrap:wrap;align-items:center}aside small{display:none}.logo{margin:0 12px 0 0}.grid,.an,.pair{grid-template-columns:1fr}}
+dialog{border:0;border-radius:18px;padding:20px;background:var(--bg);color:var(--ink);width:min(380px,92vw)}dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog input,dialog select{display:block;width:100%;margin:4px 0 10px;padding:8px 10px;border-radius:10px;border:1.5px solid var(--ink);background:var(--card);font:inherit;color:inherit}
+select.st{border:0;border-radius:20px;padding:3px 6px;font:inherit;font-size:11px;color:#111;cursor:pointer}.x{background:none;border:0;cursor:pointer;color:var(--mut);font-size:16px}.job[draggable]{cursor:grab}
+[hidden]{display:none!important}.pill,.stat,.av{color:#111}.grid.one{grid-template-columns:1fr}
+.board{grid-template-columns:repeat(6,minmax(170px,1fr))}aside a:hover{background:#1e1e1e}
+textarea{display:block;width:100%;margin:8px 0;padding:10px;border-radius:10px;border:1.5px solid var(--ink);background:var(--bg);font:inherit;font-size:13px;color:inherit;resize:vertical}
+</style></head><body><div class="app">
+<aside><div class="logo">trackly</div><small>General</small><a href="#dash" data-p="dash" class="on"><i></i>Dashboard</a><a href="#apps" data-p="apps"><i></i>Applications</a><a href="#an" data-p="an"><i></i>Analytics</a><a href="#fit" data-p="fit"><i></i>Job fit</a><small>Tools</small><a href="#rem" data-p="rem"><i></i>Reminders</a><a href="#set" data-p="set"><i></i>Settings</a></aside>
+<main>
+<div class="top"><div class="ic p"></div><label class="search">Search <input id="q" placeholder="Company or role"></label><button class="btn" id="add" style="padding:9px 16px;font-size:13px">+ Add application</button></div>
+<h1>Your job applications &amp; analytics</h1>
+<div class="grid"><section id="pL">
+<div class="donut"><svg id="dn" width="250" height="250" viewBox="0 0 250 250"></svg><b id="tot"></b></div>
+<div class="legend" id="lg"></div><div id="cards"></div></section>
+<section style="min-width:0"><div id="pFu"><h2>Needs a follow-up</h2><div class="pair" id="fu"></div></div><div id="pAn"><h2>Analytics</h2><div class="an" id="an"></div><div class="box" id="ins" style="margin-bottom:18px"></div></div>
+<div id="pApp"><div class="spread" style="margin-bottom:8px"><h2 style="margin:0">Applications</h2><div class="filters" style="margin:0"><button class="f on" data-v="table">Table</button><button class="f" data-v="board">Board</button></div></div>
+<div class="filters" id="fl"></div><div id="view"></div></div>
+<div id="pFit" hidden><h2>Job fit &amp; keyword gaps</h2>
+<div class="pair"><div class="box"><b>Your resume</b><textarea id="rs" rows="9" placeholder="Paste your resume text once. It is saved in your local database."></textarea></div>
+<div class="box"><b>Job description</b><textarea id="jd" rows="9" placeholder="Paste the job posting"></textarea></div></div>
+<div class="spread" style="justify-content:flex-start;margin-bottom:14px"><button class="btn" id="run" style="padding:9px 18px;font-size:13px">Analyze fit</button><small id="msg" style="color:var(--mut)"></small></div>
+<div id="res"></div></div>
+<div id="pSet" hidden><h2>Settings</h2><div class="box" style="max-width:420px"><label>Weekly application goal<input id="goal" type="number" min="1" style="display:block;width:100%;margin:4px 0 12px;padding:8px 10px;border-radius:10px;border:1.5px solid var(--ink);background:var(--bg);font:inherit;color:inherit"></label><div class="spread"><button class="btn" id="theme">Switch light / dark</button><button class="btn" id="csv">Export CSV</button></div></div></div></section></div></main></div>
+<dialog id="dlg"><form id="frm"><h2>Add application</h2>
+<label>Company<input name="company" required></label><label>Role<input name="role" required></label>
+<label>Stage<select name="status"><option>Wishlist</option><option selected>Applied</option><option>Screening</option><option>Interview</option><option>Offer</option></select></label>
+<label>Source<select name="source"><option>LinkedIn</option><option>Website</option><option>Referral</option><option>Cold outreach</option></select></label>
+<label>Resume version<input name="resume" placeholder="Full-Stack CV"></label><label>Salary<input name="salary" placeholder="$150k"></label>
+<div class="spread"><button type="button" class="f" id="cancel">Cancel</button><button class="btn" style="padding:8px 18px;font-size:13px">Save application</button></div></form></dialog>
+<script>
+const S=["Wishlist","Applied","Screening","Interview","Offer","Rejected"];
+const C={Wishlist:"#ece5d3",Applied:"#f7d95c",Screening:"#f5b5d6",Interview:"#b5c7ee",Offer:"#a6bf7b",Rejected:"#cfc7b3"};
+const G=+localStorage.getItem("goal")||15;let A=[],D={},f="All",q="",v="table";
+const e=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const call=(m,u,b)=>fetch("/api"+u,{method:m,headers:{"Content-Type":"application/json"},body:b?JSON.stringify(b):undefined}).then(r=>r.json());
+const bar=(l,p,c)=>`${l}<div class="bar"><i style="width:${p}%;background:${c}"></i></div>`;
+async function load(){[A,D]=await Promise.all([call("GET","/applications"),call("GET","/stats")]);paint();draw()}
+function paint(){
+ const c=D.counts,T=D.total,r=98,L=2*Math.PI*r;let o=0,h="";
+ const seg=S.slice(1).map(s=>[s,c[s]||0]);
+ seg.forEach(([n,x])=>{if(!x)return;const l=x/T*L;h+=`<circle cx="125" cy="125" r="${r}" fill="none" stroke="${C[n]}" stroke-width="34" stroke-dasharray="${Math.max(l-5,1)} ${L}" stroke-dashoffset="${-o}" stroke-linecap="round"/>`;o+=l});
+ dn.innerHTML=h;tot.innerHTML=`${T}<span>applications sent</span>`;
+ lg.innerHTML=seg.map(([n,x])=>`<span><i style="background:${C[n]}"></i>${n} ${x}</span>`).join("");
+ cards.innerHTML=[["Interviews booked",c.Interview||0,"pink"],["Waiting for reply",(c.Applied||0)+(c.Screening||0),"blue"],["Offers",c.Offer||0,"yel"]].map(([t,n,k])=>`<div class="stat" style="background:var(--${k})"><p>${t}</p><div class="n">${n}</div></div>`).join("");
+ fu.innerHTML=D.followups.map(j=>`<div class="box"><div class="who"><div class="av" style="background:${C.Applied}">${e(j.company[0])}</div><div><b>${e(j.company)}</b><br><small>${e(j.role)} · ${j.days} days quiet</small></div></div><button class="btn" data-fu="${j.id}">Mark followed up</button></div>`).join("")||`<div class="box">Nothing is stale. Every application was touched in the last 7 days.</div>`;
+ const F=D.funnel,cols=[C.Applied,C.Screening,C.Interview,C.Offer],mx=Math.max(F[0].n,1);
+ const rl=(a,c)=>a.map(x=>bar(`${e(x.name)} · ${x.rate}%`,x.rate,c)).join("")||"No data yet";
+ an.innerHTML=`<div class="box"><b>Conversion funnel</b><div style="margin-top:8px;font-size:12px">${F.map((x,i)=>bar(`${x.label} ${x.n}`,x.n/mx*100,cols[i])).join("")}</div></div>
+ <div class="box"><b>Resume response rate</b><div style="margin-top:8px;font-size:12px">${rl(D.resumes,C.Screening)}<b style="display:block;margin-top:6px">Source response rate</b>${rl(D.sources,C.Interview)}</div></div>
+ <div class="box"><b>Weekly cadence</b> <small style="color:var(--mut)">goal ${G}</small><div class="wk" style="margin-top:14px">${D.weekly.map((n,i)=>`<div style="height:${Math.max(Math.min(n/G*100,100),4)}%;background:${n>=G?C.Offer:C.Applied}"><span>${i==5?"Now":"-"+(5-i)+"w"}</span></div>`).join("")}</div><div style="height:16px"></div></div>`;
+ const I=D.insights,ln=[];
+ ln.push(`Overall, ${I.overall}% of ${I.n} sent applications got a response.`);
+ if(I.bestSource)ln.push(`Best source so far: <b>${e(I.bestSource.name)}</b> (${I.bestSource.rate}% over ${I.bestSource.n} applications).`);
+ if(I.bestResume)ln.push(`Best resume so far: <b>${e(I.bestResume.name)}</b> (${I.bestResume.rate}% over ${I.bestResume.n}).`);
+ ins.innerHTML=`<b>Insights</b><ul style="margin:8px 0 10px 18px;font-size:13px">${ln.map(x=>`<li>${x}</li>`).join("")}</ul>${I.likely.length?`<small style="color:var(--mut)">Most likely to reply (estimate from your own history):</small><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${I.likely.map(x=>`<span class="pill" style="background:${C.Screening}">${e(x.company)} ${x.p}%</span>`).join("")}</div>`:""}<small style="display:block;margin-top:8px;color:var(--mut)">Small sample, so treat these as directional.</small>`}
+function draw(){
+ const L=A.filter(j=>(f=="All"||j.status==f)&&(j.company+j.role).toLowerCase().includes(q));
+ if(v=="table")view.innerHTML=`<div class="tbl"><table><tr><th>Company<th>Role<th>Source<th>Resume<th>Applied<th>Salary<th>Stage<th></tr>${L.map(j=>`<tr><td>${e(j.company)}<td>${e(j.role)}<td>${e(j.source)}<td>${e(j.resume)}<td>${j.applied_on.slice(5)}<td>${e(j.salary)}<td><select class="st" data-id="${j.id}" style="background:${C[j.status]}">${S.map(s=>`<option${s==j.status?" selected":""}>${s}</option>`).join("")}</select><td><button class="x" data-del="${j.id}" title="Delete">×</button></tr>`).join("")||"<tr><td colspan=8>No applications match. Clear the search or pick another stage.</tr>"}</table></div>`;
+ else view.innerHTML=`<div class="board">${S.map(s=>`<div class="col" data-s="${s}"><h3><span class="pill" style="background:${C[s]}">${s}</span></h3>${L.filter(j=>j.status==s).map(j=>`<div class="job" draggable="true" data-id="${j.id}"><b>${e(j.company)}</b><br>${e(j.role)}<br><small>${e(j.source)} · ${e(j.salary)}</small></div>`).join("")}</div>`).join("")}</div>`}
+fl.innerHTML=["All",...S].map(s=>`<button class="f${s=="All"?" on":""}" data-s="${s}">${s}</button>`).join("");
+fl.onclick=x=>{if(!x.target.dataset.s)return;f=x.target.dataset.s;[...fl.children].forEach(b=>b.classList.toggle("on",b==x.target));draw()};
+document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{v=b.dataset.v;document.querySelectorAll("[data-v]").forEach(x=>x.classList.toggle("on",x==b));draw()});
+document.getElementById("q").oninput=x=>{q=x.target.value.toLowerCase();draw()};
+document.onclick=async x=>{const t=x.target;
+ if(t.dataset.fu){await call("PATCH","/applications/"+t.dataset.fu,{});load()}
+ if(t.dataset.del&&confirm("Delete this application?")){await call("DELETE","/applications/"+t.dataset.del);load()}};
+document.onchange=async x=>{if(x.target.dataset.id){await call("PATCH","/applications/"+x.target.dataset.id,{status:x.target.value});load()}};
+document.ondragstart=x=>x.dataTransfer.setData("id",x.target.dataset.id);
+document.ondragover=x=>x.preventDefault();
+document.ondrop=async x=>{const c=x.target.closest(".col");if(!c)return;await call("PATCH","/applications/"+x.dataTransfer.getData("id"),{status:c.dataset.s});load()};
+add.onclick=()=>dlg.showModal();cancel.onclick=()=>dlg.close();
+frm.onsubmit=async x=>{x.preventDefault();await call("POST","/applications",Object.fromEntries(new FormData(frm)));dlg.close();frm.reset();load()};
+const P={dash:["pL","pFu","pAn","pApp"],apps:["pApp"],an:["pL","pAn"],rem:["pFu"],set:["pSet"],fit:["pFit"]};
+function go(k){if(!P[k])k="dash";document.querySelectorAll("aside a").forEach(a=>a.classList.toggle("on",a.dataset.p==k));
+ ["pL","pFu","pAn","pApp","pSet","pFit"].forEach(id=>document.getElementById(id).hidden=!P[k].includes(id));
+ document.querySelector(".grid").classList.toggle("one",!P[k].includes("pL"));localStorage.setItem("pg",k)}
+document.querySelectorAll("aside a").forEach(a=>a.onclick=x=>{x.preventDefault();go(a.dataset.p)});
+goal.value=G;goal.onchange=()=>{localStorage.setItem("goal",Math.max(1,+goal.value||15));location.reload()};
+theme.onclick=()=>{const r=document.documentElement,d=r.dataset.theme?r.dataset.theme=="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=d?"light":"dark"};
+csv.onclick=()=>{const k=["company","role","status","source","resume","salary","applied_on"];const t=[k.join(","),...A.map(j=>k.map(c=>`"${String(j[c]??"").replace(/"/g,'""')}"`).join(","))].join("\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"text/csv"}));a.download="applications.csv";a.click()};
+const IM={high:C.Screening,medium:C.Applied,low:C.Wishlist};
+function showFit(d){
+ const col=d.score>=70?C.Offer:d.score>=45?C.Applied:C.Screening;
+ const chips=a=>a.map(m=>`<span class="pill" style="background:${C.Offer}">${e(m)}</span>`).join("")||"None found";
+ res.innerHTML=`<div class="pair"><div class="stat" style="background:${col}"><p>Fit score</p><div class="n" style="font-size:56px">${+d.score||0}%</div><small>${e(d.verdict)}</small></div>
+ <div class="box"><b>Matched keywords</b><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${chips(d.matched||[])}</div>
+ ${(d.strengths||[]).length?`<b style="display:block;margin-top:12px">Strengths</b><ul style="margin:6px 0 0 18px;font-size:13px">${d.strengths.map(x=>`<li>${e(x)}</li>`).join("")}</ul>`:""}</div></div>
+ <div class="box" style="margin-bottom:10px"><b>Missing keywords</b>${(d.missing||[]).map(m=>`<div class="spread" style="align-items:flex-start;border-top:1px solid rgba(0,0,0,.1);padding:8px 0;margin-top:8px"><div><b>${e(m.skill)}</b><br><small style="color:var(--mut)">${e(m.suggestion)}</small></div><span class="pill" style="background:${IM[m.importance]||C.Wishlist}">${e(m.importance)}</span></div>`).join("")||"<div style='margin-top:8px'>No gaps found.</div>"}</div>
+ <small style="color:var(--mut)">${d.mode=="ai"?"Analyzed by Claude.":"Keyword match only. Set ANTHROPIC_API_KEY on the server for a full AI read."} ${e(d.note||"")}</small>`}
+call("GET","/resume").then(r=>rs.value=r.text||"");
+let st;rs.oninput=()=>{clearTimeout(st);st=setTimeout(()=>call("PUT","/resume",{text:rs.value}),600)};
+run.onclick=async()=>{msg.textContent="Analyzing...";run.disabled=true;
+ try{const d=await call("POST","/fit",{resume:rs.value,jd:jd.value});msg.textContent=d.error||"";if(!d.error)showFit(d)}
+ catch{msg.textContent="Could not reach the server. Is npm start still running?"}
+ run.disabled=false};
+go(localStorage.getItem("pg")||"dash");
+load();
+</script></body></html>
